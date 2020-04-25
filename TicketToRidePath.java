@@ -39,14 +39,14 @@ class TicketToRidePath {
     public static ArrayList<Graph> calculateFrom(String city, Graph graph) {
         ArrayList<Graph> routes = new ArrayList<>(graph.size());
         for (Path path : graph.connectionsWith(city)) {
-            Graph graphWithoutPath = graph.without(path);
-            ArrayList<Graph> subRoutes = calculateFrom(path.follow(city),
-                    graphWithoutPath);
-            for (Graph route : subRoutes) {
+            for (Graph route : calculateFrom(path.follow(city),
+                    graph.without(path))) {
                 route.add(path);
                 routes.add(route);
             }
         }
+        if (routes.isEmpty())
+            routes.add(new Graph());
         return routes;
     }
 }
@@ -129,9 +129,6 @@ class Path {
     }
     public boolean contains(String city) {
         return cityA.equals(city) || cityB.equals(city);
-    }
-    public Path reversed() {
-        return new Path(cityB, cityA, distance);
     }
     public String follow(String city) {
         if (!contains(city))
