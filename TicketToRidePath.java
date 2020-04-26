@@ -2,11 +2,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 class TicketToRidePath {
     public static void main (String[] args) {
+        System.out.println("Input graph:");
+        System.out.println(EXAMPLE1);
+        System.out.println("Longest path subgraph:");
         System.out.println(longestPath(EXAMPLE1));
     }
     public static final Graph EXAMPLE1 = new Graph()
         .connect("France1"    , "Geneve"     , 1)
-        .connect("Geneve"     , "Lausanne"   , 4)
         .connect("Geneve"     , "Yverdon"    , 6)
         .connect("Yverdon"    , "Neuchatel"  , 2)
         .connect("Neuchatel"  , "Bern"       , 2)
@@ -55,10 +57,9 @@ class Graph extends HashSet<Path> {
     public Graph(int loadFactor) { super(loadFactor); }
     public Graph without(Path path) {
         Graph without = new Graph(this.size() - 1);
-        for (Path other : this) {
+        for (Path other : this)
             if (!path.equals(other))
                 without.add(other);
-        }
         return without;
     }
     @Override public String toString() {
@@ -88,10 +89,7 @@ class Graph extends HashSet<Path> {
         }
         return cities;
     }
-    public Graph connect(Path path) {
-        add(path);
-        return this;
-    }
+    public Graph connect(Path path) { add(path); return this; }
     public Graph connect(String cityA, String cityB, int distance) {
         return connect(new Path(cityA, cityB, distance));
     }
